@@ -14,34 +14,34 @@ namespace bracket_expression
             char symbol2 = ')';
             string expression;
             int maxNestingLevel = int.MinValue;
-            int nestingLevel = 0;
-            int symbol1Count = 0;
-            int symbol2Count = 0;
+            int currentNesting = 0;
 
             Console.Write("Введиту выражение: ");
             expression = Console.ReadLine();
 
-            for(int i = 0; i < expression.Length; i++)
+            foreach(var symbol in expression)
             {
-                if (expression[i] == symbol1)
+                if (symbol == symbol1)
                 {
-                    nestingLevel++;
-                    symbol1Count++;
-                }
-                else if (expression[i] == symbol2)
-                {
-                    symbol2Count++;
+                    currentNesting++;
 
-                    if (maxNestingLevel < nestingLevel)
+                    if (maxNestingLevel < currentNesting)
                     {
-                        maxNestingLevel = nestingLevel;
+                        maxNestingLevel = currentNesting;
                     }
+                }
+                else if (symbol == symbol2)
+                {
+                    currentNesting--;
 
-                    nestingLevel = 0;
+                    if (currentNesting < 0)
+                    {
+                        break;
+                    }
                 }
             }
 
-            if(symbol1Count == symbol2Count && expression[0] != symbol2 && expression[expression.Length - 1] != symbol1)
+            if(currentNesting == 0)
             {
                 Console.WriteLine("Выражение коректно, уровень вложенности: " + maxNestingLevel);
             }
